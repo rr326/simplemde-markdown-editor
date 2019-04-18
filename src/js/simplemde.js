@@ -79,8 +79,8 @@ var isMobile = function() {
 
 
 /**
- * Fix shortcut. Mac use Command, others use Ctrl.
- */
+	* Fix shortcut. Mac use Command, others use Ctrl.
+	*/
 function fixShortcut(name) {
 	if(isMac) {
 		name = name.replace("Ctrl", "Cmd");
@@ -92,8 +92,8 @@ function fixShortcut(name) {
 
 
 /**
- * Create icon element for toolbar.
- */
+	* Create icon element for toolbar.
+	*/
 function createIcon(options, enableTooltips, shortcuts) {
 	options = options || {};
 	var el = document.createElement("a");
@@ -135,8 +135,8 @@ function createTootlip(title, action, shortcuts) {
 }
 
 /**
- * The state of CodeMirror at the given position.
- */
+	* The state of CodeMirror at the given position.
+	*/
 function getState(cm, pos) {
 	pos = pos || cm.getCursor("start");
 	var stat = cm.getTokenAt(pos);
@@ -183,8 +183,8 @@ function getState(cm, pos) {
 var saved_overflow = "";
 
 /**
- * Toggle full screen of the editor.
- */
+	* Toggle full screen of the editor.
+	*/
 function toggleFullScreen(editor) {
 	// Set fullscreen
 	var cm = editor.codemirror;
@@ -228,31 +228,31 @@ function toggleFullScreen(editor) {
 
 
 /**
- * Action for toggling bold.
- */
+	* Action for toggling bold.
+	*/
 function toggleBold(editor) {
 	_toggleBlock(editor, "bold", editor.options.blockStyles.bold);
 }
 
 
 /**
- * Action for toggling italic.
- */
+	* Action for toggling italic.
+	*/
 function toggleItalic(editor) {
 	_toggleBlock(editor, "italic", editor.options.blockStyles.italic);
 }
 
 
 /**
- * Action for toggling strikethrough.
- */
+	* Action for toggling strikethrough.
+	*/
 function toggleStrikethrough(editor) {
 	_toggleBlock(editor, "strikethrough", "~~");
 }
 
 /**
- * Action for toggling code block.
- */
+	* Action for toggling code block.
+	*/
 function toggleCodeBlock(editor) {
 	var fenceCharsToInsert = editor.options.blockStyles.code;
 
@@ -271,11 +271,11 @@ function toggleCodeBlock(editor) {
 
 	function code_type(cm, line_num, line, firstTok, lastTok) {
 		/*
-		 * Return "single", "indented", "fenced" or false
-		 *
-		 * cm and line_num are required.  Others are optional for efficiency
-		 *   To check in the middle of a line, pass in firstTok yourself.
-		 */
+			* Return "single", "indented", "fenced" or false
+			*
+			* cm and line_num are required.  Others are optional for efficiency
+			*   To check in the middle of a line, pass in firstTok yourself.
+			*/
 		line = line || cm.getLineHandle(line_num);
 		firstTok = firstTok || cm.getTokenAt({
 			line: line_num,
@@ -537,48 +537,48 @@ function toggleCodeBlock(editor) {
 }
 
 /**
- * Action for toggling blockquote.
- */
+	* Action for toggling blockquote.
+	*/
 function toggleBlockquote(editor) {
 	var cm = editor.codemirror;
 	_toggleLine(cm, "quote");
 }
 
 /**
- * Action for toggling heading size: normal -> h1 -> h2 -> h3 -> h4 -> h5 -> h6 -> normal
- */
+	* Action for toggling heading size: normal -> h1 -> h2 -> h3 -> h4 -> h5 -> h6 -> normal
+	*/
 function toggleHeadingSmaller(editor) {
 	var cm = editor.codemirror;
 	_toggleHeading(cm, "smaller");
 }
 
 /**
- * Action for toggling heading size: normal -> h6 -> h5 -> h4 -> h3 -> h2 -> h1 -> normal
- */
+	* Action for toggling heading size: normal -> h6 -> h5 -> h4 -> h3 -> h2 -> h1 -> normal
+	*/
 function toggleHeadingBigger(editor) {
 	var cm = editor.codemirror;
 	_toggleHeading(cm, "bigger");
 }
 
 /**
- * Action for toggling heading size 1
- */
+	* Action for toggling heading size 1
+	*/
 function toggleHeading1(editor) {
 	var cm = editor.codemirror;
 	_toggleHeading(cm, undefined, 1);
 }
 
 /**
- * Action for toggling heading size 2
- */
+	* Action for toggling heading size 2
+	*/
 function toggleHeading2(editor) {
 	var cm = editor.codemirror;
 	_toggleHeading(cm, undefined, 2);
 }
 
 /**
- * Action for toggling heading size 3
- */
+	* Action for toggling heading size 3
+	*/
 function toggleHeading3(editor) {
 	var cm = editor.codemirror;
 	_toggleHeading(cm, undefined, 3);
@@ -586,8 +586,8 @@ function toggleHeading3(editor) {
 
 
 /**
- * Action for toggling ul.
- */
+	* Action for toggling ul.
+	*/
 function toggleUnorderedList(editor) {
 	var cm = editor.codemirror;
 	_toggleLine(cm, "unordered-list");
@@ -595,24 +595,24 @@ function toggleUnorderedList(editor) {
 
 
 /**
- * Action for toggling ol.
- */
+	* Action for toggling ol.
+	*/
 function toggleOrderedList(editor) {
 	var cm = editor.codemirror;
 	_toggleLine(cm, "ordered-list");
 }
 
 /**
- * Action for clean block (remove headline, list, blockquote code, markers)
- */
+	* Action for clean block (remove headline, list, blockquote code, markers)
+	*/
 function cleanBlock(editor) {
 	var cm = editor.codemirror;
 	_cleanBlock(cm);
 }
 
 /**
- * Action for drawing a link.
- */
+	* Action for drawing a link.
+	*/
 function drawLink(editor) {
 	var cm = editor.codemirror;
 	var stat = getState(cm);
@@ -628,8 +628,8 @@ function drawLink(editor) {
 }
 
 /**
- * Action for drawing an img.
- */
+	* Action for drawing an img.
+	*/
 function drawImage(editor) {
 	var cm = editor.codemirror;
 	var stat = getState(cm);
@@ -645,8 +645,8 @@ function drawImage(editor) {
 }
 
 /**
- * Action for drawing a table.
- */
+	* Action for drawing a table.
+	*/
 function drawTable(editor) {
 	var cm = editor.codemirror;
 	var stat = getState(cm);
@@ -655,8 +655,8 @@ function drawTable(editor) {
 }
 
 /**
- * Action for drawing a horizontal rule.
- */
+	* Action for drawing a horizontal rule.
+	*/
 function drawHorizontalRule(editor) {
 	var cm = editor.codemirror;
 	var stat = getState(cm);
@@ -666,8 +666,8 @@ function drawHorizontalRule(editor) {
 
 
 /**
- * Undo action.
- */
+	* Undo action.
+	*/
 function undo(editor) {
 	var cm = editor.codemirror;
 	cm.undo();
@@ -676,8 +676,8 @@ function undo(editor) {
 
 
 /**
- * Redo action.
- */
+	* Redo action.
+	*/
 function redo(editor) {
 	var cm = editor.codemirror;
 	cm.redo();
@@ -686,8 +686,8 @@ function redo(editor) {
 
 
 /**
- * Toggle side by side preview
- */
+	* Toggle side by side preview
+	*/
 function toggleSideBySide(editor) {
 	var cm = editor.codemirror;
 	var wrapper = cm.getWrapperElement();
@@ -747,8 +747,8 @@ function toggleSideBySide(editor) {
 
 
 /**
- * Preview action.
- */
+	* Preview action.
+	*/
 function togglePreview(editor) {
 	var cm = editor.codemirror;
 	var wrapper = cm.getWrapperElement();
@@ -1259,8 +1259,8 @@ var blockStyles = {
 };
 
 /**
- * Interface of SimpleMDE.
- */
+	* Interface of SimpleMDE.
+	*/
 function SimpleMDE(options) {
 	// Handle options parameter
 	options = options || {};
@@ -1387,8 +1387,8 @@ function SimpleMDE(options) {
 }
 
 /**
- * Default markdown render.
- */
+	* Default markdown render.
+	*/
 SimpleMDE.prototype.markdown = function(text) {
 	if(marked) {
 		// Initialize
@@ -1419,8 +1419,8 @@ SimpleMDE.prototype.markdown = function(text) {
 };
 
 /**
- * Render editor to the given element.
- */
+	* Render editor to the given element.
+	*/
 SimpleMDE.prototype.render = function(el) {
 	if(!el) {
 		el = this.element || document.getElementsByTagName("textarea")[0];
@@ -1532,7 +1532,7 @@ function isLocalStorageAvailable() {
 		try {
 			localStorage.setItem("smde_localStorage", 1);
 			localStorage.removeItem("smde_localStorage");
-		} catch(e) {
+		} catch (e) {
 			return false;
 		}
 	} else {
@@ -1864,8 +1864,8 @@ SimpleMDE.prototype.createStatusbar = function(status) {
 };
 
 /**
- * Get or set the text content.
- */
+	* Get or set the text content.
+	*/
 SimpleMDE.prototype.value = function(val) {
 	if(val === undefined) {
 		return this.codemirror.getValue();
@@ -1877,8 +1877,8 @@ SimpleMDE.prototype.value = function(val) {
 
 
 /**
- * Bind static methods for exports.
- */
+	* Bind static methods for exports.
+	*/
 SimpleMDE.toggleBold = toggleBold;
 SimpleMDE.toggleItalic = toggleItalic;
 SimpleMDE.toggleStrikethrough = toggleStrikethrough;
@@ -1903,8 +1903,8 @@ SimpleMDE.toggleSideBySide = toggleSideBySide;
 SimpleMDE.toggleFullScreen = toggleFullScreen;
 
 /**
- * Bind instance methods for exports.
- */
+	* Bind instance methods for exports.
+	*/
 SimpleMDE.prototype.toggleBold = function() {
 	toggleBold(this);
 };

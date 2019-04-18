@@ -40,6 +40,7 @@ var bindings = {
 	"undo": undo,
 	"redo": redo,
 	"toggleSideBySide": toggleSideBySide,
+	"toggleSideBySideInline": toggleSideBySideInline,
 	"toggleFullScreen": toggleFullScreen
 };
 
@@ -745,6 +746,66 @@ function toggleSideBySide(editor) {
 	cm.refresh();
 }
 
+/**
+	* Toggle side by side preview - NOT expanding to full screen
+	*/
+function toggleSideBySideInline(editor) {
+	var cm = editor.codemirror;
+	var wrapper = cm.getWrapperElement();
+	var parentEl = wrapper.parentNode;
+	var preview = wrapper.nextSibling;
+	var toolbarButton = editor.toolbarElements["side-by-side-inline"];
+	var useSideBySideListener = false;
+	if(/editor-preview-active-side/.test(preview.className)) {
+		parentEl.classList.remove("inlinesbs");
+		preview.className = preview.className.replace(
+			/\s*editor-preview-active-side\s*/g, ""
+		);
+		toolbarButton.className = toolbarButton.className.replace(/\s*active\s*/g, "");
+		wrapper.className = wrapper.className.replace(/\s*CodeMirror-sided\s*/g, " ");
+	} else {
+		// When the preview button is clicked for the first time,
+		// give some time for the transition from editor.css to fire and the view to slide from right to left,
+		// instead of just appearing.
+		parentEl.className += " inlinesbs";
+		setTimeout(function() {
+			preview.className += " editor-preview-active-side";
+		}, 1);
+		toolbarButton.className += " active";
+		wrapper.className += " CodeMirror-sided";
+		useSideBySideListener = true;
+	}
+
+	// Hide normal preview if active
+	var previewNormal = wrapper.lastChild;
+	if(/editor-preview-active/.test(previewNormal.className)) {
+		previewNormal.className = previewNormal.className.replace(
+			/\s*editor-preview-active\s*/g, ""
+		);
+		var toolbar = editor.toolbarElements.preview;
+		var toolbar_div = wrapper.previousSibling;
+		toolbar.className = toolbar.className.replace(/\s*active\s*/g, "");
+		toolbar_div.className = toolbar_div.className.replace(/\s*disabled-for-preview*/g, "");
+	}
+
+	var sideBySideRenderingFunction = function() {
+		preview.innerHTML = editor.options.previewRender(editor.value(), preview);
+	};
+
+	if(!cm.sideBySideRenderingFunction) {
+		cm.sideBySideRenderingFunction = sideBySideRenderingFunction;
+	}
+
+	if(useSideBySideListener) {
+		preview.innerHTML = editor.options.previewRender(editor.value(), preview);
+		cm.on("update", cm.sideBySideRenderingFunction);
+	} else {
+		cm.off("update", cm.sideBySideRenderingFunction);
+	}
+
+	// Refresh to fix selection being off (#309)
+	cm.refresh();
+}
 
 /**
 	* Preview action.
@@ -1205,6 +1266,13 @@ var toolbarBuiltInButtons = {
 		className: "fa fa-columns no-disable no-mobile",
 		title: "Toggle Side by Side",
 		default: true
+	},
+	"side-by-side-inline": {
+		name: "side-by-side-inline",
+		action: toggleSideBySideInline,
+		className: "fa fa-columns no-disable no-mobile",
+		title: "Toggle Side by Side",
+		default: false
 	},
 	"fullscreen": {
 		name: "fullscreen",
@@ -1900,6 +1968,7 @@ SimpleMDE.undo = undo;
 SimpleMDE.redo = redo;
 SimpleMDE.togglePreview = togglePreview;
 SimpleMDE.toggleSideBySide = toggleSideBySide;
+SimpleMDE.toggleSideBySideInline = toggleSideBySideInline;
 SimpleMDE.toggleFullScreen = toggleFullScreen;
 
 /**
@@ -1967,6 +2036,9 @@ SimpleMDE.prototype.togglePreview = function() {
 };
 SimpleMDE.prototype.toggleSideBySide = function() {
 	toggleSideBySide(this);
+};
+SimpleMDE.prototype.toggleSideBySideInline = function() {
+	toggleSideBySideInline(this);
 };
 SimpleMDE.prototype.toggleFullScreen = function() {
 	toggleFullScreen(this);

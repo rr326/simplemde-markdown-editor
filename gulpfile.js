@@ -69,7 +69,7 @@ gulp.task("scripts", gulp.series("browserify:debug", "browserify", "lint", funct
 
   return gulp.src(js_files)
     .pipe(concat("simplemde.min.js"))
-    .pipe(uglify())
+    // .pipe(uglify())
     .pipe(buffer())
     .pipe(header(banner, {pkg: pkg}))
     .pipe(gulp.dest("./dist/"));

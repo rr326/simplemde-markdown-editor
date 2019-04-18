@@ -326,3 +326,30 @@
 .CodeMirror .CodeMirror-placeholder {
   opacity: .5;
 }
+
+/* Changes for Inline side-by-side */
+.inlinesbs.markdown-editor {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-areas:
+    "toolbar toolbar"
+    "editor preview"
+}
+
+.inlinesbs>.editor-toolbar {
+  grid-area: toolbar;
+}
+
+.inlinesbs>.CodeMirror {
+  grid-area: editor;
+}
+
+.inlinesbs>.editor-preview-side {
+  grid-area: preview;
+  position: inherit;
+  width: 100%;
+}
+
+.inlinesbs>.CodeMirror-sided {
+  width: 100% !important;
+}

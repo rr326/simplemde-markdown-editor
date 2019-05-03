@@ -808,6 +808,40 @@ function toggleSideBySideInline(editor) {
 }
 
 /**
+	* Set side-by-side view if not already active.
+	*/
+function setSideBySideInline(editor) {
+	var cm = editor.codemirror;
+	var wrapper = cm.getWrapperElement();
+	var parentEl = wrapper.parentNode;
+	var preview = wrapper.nextSibling;
+	var toolbarButton = editor.toolbarElements["side-by-side-inline"];
+	if(/editor-preview-active-side/.test(preview.className)) {
+		// Already side by side
+		return;
+	} else {
+		parentEl.className += " inlinesbs";
+		preview.className += " editor-preview-active-side";
+		toolbarButton.className += " active";
+		wrapper.className += " CodeMirror-sided";
+	}
+
+	var sideBySideRenderingFunction = function() {
+		preview.innerHTML = editor.options.previewRender(editor.value(), preview);
+	};
+
+	if(!cm.sideBySideRenderingFunction) {
+		cm.sideBySideRenderingFunction = sideBySideRenderingFunction;
+	}
+	preview.innerHTML = editor.options.previewRender(editor.value(), preview);
+	cm.on("update", cm.sideBySideRenderingFunction);
+
+	// Refresh to fix selection being off (#309)
+	cm.refresh();
+}
+
+
+/**
 	* Preview action.
 	*/
 function togglePreview(editor) {
@@ -1445,6 +1479,11 @@ function SimpleMDE(options) {
 	// Auto render
 	this.render();
 
+	// Start in side-by-side mode
+	if(options.startSideBySide) {
+		this.setSideBySideInline();
+	}
+
 
 	// The codemirror component is only available after rendering
 	// so, the setter for the initialValue can only run after
@@ -1969,6 +2008,7 @@ SimpleMDE.redo = redo;
 SimpleMDE.togglePreview = togglePreview;
 SimpleMDE.toggleSideBySide = toggleSideBySide;
 SimpleMDE.toggleSideBySideInline = toggleSideBySideInline;
+SimpleMDE.setSideBySideInline = setSideBySideInline;
 SimpleMDE.toggleFullScreen = toggleFullScreen;
 
 /**
@@ -2039,6 +2079,9 @@ SimpleMDE.prototype.toggleSideBySide = function() {
 };
 SimpleMDE.prototype.toggleSideBySideInline = function() {
 	toggleSideBySideInline(this);
+};
+SimpleMDE.prototype.setSideBySideInline = function() {
+	setSideBySideInline(this);
 };
 SimpleMDE.prototype.toggleFullScreen = function() {
 	toggleFullScreen(this);
